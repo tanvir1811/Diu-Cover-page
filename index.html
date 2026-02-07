@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<title>DIU Cover Page</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="script.js"></script>
+</head>
+<body>
+<h1>DIU Cover Page</h1>
+
+<div class="flex1">
+<div>
+    <fieldset class="field">
+<legend class="legend">Student Information</legend>
+<label for="studentname" class="label"> Student Name:</label>
+ <br>
+<input type="text" id="studentname" class="textinput">
+<br>
+<label for="studentid" class="label">Student ID:</label>
+ <br>
+<input type="text" id="studentid" class="textinput">
+<br>
+<label for="section" class="label">Section:  </label>
+ <br>
+<input type="text" id="section" class="textinput" >
+<br>
+<label for="batch" class="label">Batch:</label>
+ <br>
+<input type="text" id="batch" class="textinput" >
+<br>
+<label for="semester1" class="label"> Semester:</label>
+ <br>
+ <div>
+  <select id="semester1" class="textinput" >
+    <option value="Spring">Spring</option>
+    <option value="Summer">Summer</option>
+    <option value="Fall">Fall</option>
+  </select>
+  <select id="semester2" class="textinput" >
+    <option value="2026">2026</option>
+    <option value="2027">2027</option>
+    <option value="2028">2028</option>
+    <option value="2029">2029</option>
+    <option value="2030">2030</option>
+ </select>
+ </div>
+
+</fieldset>
+
+<fieldset class="field">
+    <legend class="legend">Course Details</legend>
+    <label for="CourseName" class="label">Course Name:</label>
+     <br>
+    <input type="text" id="CourseName" class="textinput">
+    <br>
+    <label for="CourseID" class="label"> Course Id:</label>
+     <br>
+    <input type="text" id="CourseID" class="textinput">
+
+</fieldset>
+
+<fieldset class="field">
+    <legend class="legend">Teacher info</legend>
+    <label for="TeacherName" class="label">Course Teacher Name:</label>
+     <br>
+    <input type="text" id="TeacherName" class="textinput">
+    <br>
+    <label for="Designation" class="label">Designaton</label>
+     <br>
+  <Select id="Designation" class="textinput">
+    <option value="Professor">Professor</option>
+    <option value="Associate Professor">Associate Professor</option>
+    <option value="Assistant Professor">Assistant Professor</option>
+    <option value="Senior Lecturer">Senior Lecturer</option>
+    <option value="Lecturer">Lecturer</option>
+  </Select>
+</fieldset>
+<fieldset class="field">
+    <legend class="legend"> Cover details</legend>
+    <label for="Date" class="label">Submission Date:</label>
+    <br>
+    <input type="date" id="Date" class="textinput">
+    <br>
+    <label for="covertype" class="label">Cover type:</label>
+     <br>
+  <select class="textinput" id="covertype">
+    <option value="Theory Assignment Report">Theory Assignment Report</option>
+        <option value="Lab Assignment Report">Lab Assignment Report</option>
+         <option value="Lab Evaluation Report">Lab Evaluation Report</option>
+        <option value="Lab Report">Lab Report</option>
+            <option value="Lab Final">Lab Final </option>
+  </select>
+  <br>
+  <label for="ftype" class="label">Download Format</label>
+  <br>
+  <select class="textinput" id="ftype">
+    <option value="pdf">Pdf</option>
+    <option value="image">Image</option>
+  </select>
+
+</fieldset>
+
+<button class="textinput1" onclick="getinfo()">Preview</button>
+</div>
+<div id="cover-page">
+    <img src="logo.jpeg" alt="Diu Logo" id="img">
+    <div id="covername">
+    
+    </div>
+    <div id="marks-table">
+<table class="marks-style">
+        <tr >
+            <th colspan="7">Only for course Teacher</th>
+        </tr>
+        <tr>
+            <th colspan="2"></th>
+            <th>Needs Improvement</th>
+            <th>Developing</th>
+            <th>Sufficient</th>
+            <th>Above Average</th>
+            <th>Total Mark</th>
+
+        </tr>
+        <tr>
+            <th colspan="2">Allocate mark and Percentage</th>
+            <th>25%</th>
+                   <th>50%</th>
+                          <th>75%</th>
+                                 <th>100%</th>
+                                        <th id="n5"></th>
+        </tr>
+        <tr>
+            <th>Clarity</th>
+            <th id="n1">1</th>
+            <td></td>
+             <td></td> 
+              <td></td>
+              <td></td>
+             <td></td>
+        </tr>
+          <tr>
+            <th>Content Quality</th>
+            <th id="n2">1</th>
+            <td></td>
+             <td></td> 
+              <td></td>
+              <td></td>
+             <td></td>
+        </tr>
+          <tr>
+            <th>Spelling & Grammar</th>
+            <th id="n3">1</th>
+            <td></td>
+             <td></td> 
+              <td></td>
+              <td></td>
+             <td></td>
+        </tr>
+          <tr>
+            <th>Organization and Formating</th>
+            <th  id="n4">1</th>
+            <td></td>
+             <td></td> 
+              <td></td>
+              <td></td>
+             <td></td>
+        </tr>
+        <tr>
+            <th id="tm" colspan="6">Total obtained mark</th>
+            <td></td>
+        </tr>
+        <tr >
+            <th>Comments</th>
+            <td colspan="6"></td>
+        </tr>
+    </table>
+    </div>
+    <div class="contents">
+ <div class="contents1" style="font-weight: bold;">Semester:</div>
+    <div class="contents1" id="sem1"></div>
+    </div>
+    <div class="contents">
+ <div class="contents1" style="font-weight: bold;"> Student Name:</div>
+    <div class="contents1" id="stna1"></div>
+    </div>
+     <div class="contents">
+    <div class="contents1" style="font-weight: bold;">Student ID:</div>
+    <div class="contents1" id="stid"></div>
+    </div>
+     <div class="contents">
+    <div class="contents1" style="font-weight: bold;">Batch:</div>
+    <div class="contents1" id="batch1"  style="margin-right:40% ;">41</div>
+
+     <div class="contents1" style="font-weight: bold;">Section:</div>
+    <div class="contents1" id="sec"></div>
+    </div>
+  
+     <div class="contents">
+    <div class="contents1" style="font-weight: bold;">Course Code:</div>
+    <div class="contents1" id="cc"></div>
+    </div>
+   
+     <div class="contents">
+    <div class="contents1" style="font-weight: bold;">Course Name:</div>
+    <div class="contents1" id="cn"></div>
+    </div>
+   <div class="contents">
+    <div class="contents1" style="font-weight: bold;">Course Teacher Name:</div>
+    <div class="contents1" id="ctn"></div>
+    </div>
+
+       <div class="contents">
+    <div class="contents1" style="font-weight: bold;">Designation:</div>
+    <div class="contents1" id="de"></div>
+    </div>
+       <div class="contents">
+    <div class="contents1" style="font-weight: bold;">Submission Date:</div>
+    <div class="contents1" id="da"></div>
+    </div>
+</div>
+</div>
+<button class="textinput1" onclick="download()">Download</button>
+<footer>
+Developed by Khan Tanvir Ferdous
+</footer>
+
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
