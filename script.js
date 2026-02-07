@@ -77,7 +77,7 @@ function getinfo(){
         giveinfo(10,15,10,5,40)
     }
 
-
+ 
     
 
 
@@ -85,6 +85,18 @@ function getinfo(){
 
 
 }
+
+ document.getElementById('ftype').addEventListener('change',()=> {
+      down3 =document.getElementById("ftype").value;
+ if(down3=="pdf"){
+  document.getElementById("file1").style.display="block";
+  }
+
+  if(down3=="image"){
+  document.getElementById("file1").style.display="none";
+  }
+ 
+     });
 
 function giveinfo( n1 , n2 , n3 , n4 , n5){
     document.getElementById("n1").textContent=n1;
@@ -96,14 +108,23 @@ function giveinfo( n1 , n2 , n3 , n4 , n5){
 
 }
 function download(){
+    
     down =document.getElementById("ftype").value;
-    if(down=="pdf"){
+    down2=document.getElementById("file");
+    if(down=="pdf" && down2.files.length === 0){
        downloadPDF();
+    }
+    else if(down=="pdf" &&  down2.files.length !== 0){
+        
+             PDF1();
     }
     else if(down=="image"){
         takeScreenshot();
     }
 }
+
+
+
 
 async function downloadPDF() {
     const { jsPDF } = window.jspdf;
@@ -134,6 +155,10 @@ async function downloadPDF() {
     pdf.save(studentId2+"_Cover_Page.pdf");
 }
 
+
+
+
+
 function takeScreenshot() {
     const element = document.getElementById('cover-page');
     studentId1=document.getElementById("studentid").value;
@@ -148,4 +173,63 @@ function takeScreenshot() {
         link.href = canvas.toDataURL("image/png");
         link.click();
     });
+}
+
+
+
+
+
+async function PDF1() {
+    const { jsPDF } = window.jspdf;
+    const { PDFDocument } = PDFLib; 
+    const element = document.getElementById('cover-page');
+    const fileInput = document.getElementById("file"); 
+
+
+    if (!fileInput.files[0]) {
+        alert("Please upload the main PDF file first!");
+        return;
+    }
+
+   
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL('image/png');
+
+
+    const coverPdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const pdfWidth = coverPdf.internal.pageSize.getWidth();
+    const imgProps = coverPdf.getImageProperties(imgData);
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    coverPdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    
+
+    const coverBytes = coverPdf.output('arraybuffer');
+
+ 
+    const uploadedFile = fileInput.files[0];
+    const uploadedBytes = await uploadedFile.arrayBuffer();
+
+    
+    const mergedPdf = await PDFDocument.create();
+    
+   
+    const pdf1 = await PDFDocument.load(coverBytes);
+    const pdf2 = await PDFDocument.load(uploadedBytes);
+
+    const coverPages = await mergedPdf.copyPages(pdf1, pdf1.getPageIndices());
+    coverPages.forEach((page) => mergedPdf.addPage(page));
+
+    const contentPages = await mergedPdf.copyPages(pdf2, pdf2.getPageIndices());
+    contentPages.forEach((page) => mergedPdf.addPage(page));
+
+    
+    const mergedPdfBytes = await mergedPdf.save();
+    const studentId2 = document.getElementById("studentid").value || "Student";
+    
+  
+    const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = studentId2 + ".pdf";
+    link.click();
 }
