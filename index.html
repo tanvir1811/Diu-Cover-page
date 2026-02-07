@@ -5,8 +5,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="script.js"></script>
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
 </head>
 <body>
 <h1>DIU Cover Page</h1>
@@ -63,7 +62,7 @@
 </fieldset>
 
 <fieldset class="field">
-    <legend class="legend">Teacher info</legend>
+    <legend class="legend">Teacher Info</legend>
     <label for="TeacherName" class="label">Course Teacher Name:</label>
      <br>
     <input type="text" id="TeacherName" class="textinput">
@@ -79,7 +78,7 @@
   </Select>
 </fieldset>
 <fieldset class="field">
-    <legend class="legend"> Cover details</legend>
+    <legend class="legend"> Cover Details</legend>
     <label for="Date" class="label">Submission Date:</label>
     <br>
     <input type="date" id="Date" class="textinput">
@@ -101,7 +100,18 @@
     <option value="image">Image</option>
   </select>
 
+  <br>
+  
+
 </fieldset>
+
+<div class="field" id="file1">
+  <fieldset class="field2">
+    <legend class="legend">Attach Pdf-(Optional)</legend>
+    <br>
+  <input type="file" class="textinput" id="file" accept="application/pdf">
+  </fieldset> 
+</div>
 
 <button class="textinput1" onclick="getinfo()">Preview</button>
 </div>
@@ -192,7 +202,7 @@
     </div>
      <div class="contents">
     <div class="contents1" style="font-weight: bold;">Batch:</div>
-    <div class="contents1" id="batch1"  style="margin-right:40% ;"> </div>
+    <div class="contents1" id="batch1"  style="margin-right:40% ;">41</div>
 
      <div class="contents1" style="font-weight: bold;">Section:</div>
     <div class="contents1" id="sec"></div>
@@ -222,11 +232,13 @@
     </div>
 </div>
 </div>
+
+
 <button class="textinput1" onclick="download()">Download</button>
 <footer>
 Developed by Khan Tanvir Ferdous
 </footer>
-
+<script src="script.js"></script>
 
 </body>
 
