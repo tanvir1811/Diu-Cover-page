@@ -109,7 +109,9 @@ footer{
 
 #covername{
     width: 100%;
-    padding: 1%;
+    padding-left: 1%;
+    padding-right:1%;
+    padding-top:1%;
     text-align: center;
     font-size: 40px;
     font-family: 'Times New Roman', Times, serif;
