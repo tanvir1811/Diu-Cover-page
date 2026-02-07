@@ -111,50 +111,89 @@ function download(){
     
     down =document.getElementById("ftype").value;
     down2=document.getElementById("file");
+    s=returnscale();
+    q=returnquality();
     if(down=="pdf" && down2.files.length === 0){
-       downloadPDF();
+       downloadPDF(s,q);
     }
     else if(down=="pdf" &&  down2.files.length !== 0){
         
-             PDF1();
+             PDF1(s,q);
     }
     else if(down=="image"){
         takeScreenshot();
     }
 }
 
+function returnscale(){
+    scale=document.getElementById("rtype").value;
+    if(scale=="low"){
+        return 1;
+    }
+    else if(scale=="normal"){
+        return 2;
+    }
+
+    else if(scale=="high"){
+        return 3;
+    }
+    else{
+        return 1;
+    }
+}
+
+function returnquality(){
+    quality=document.getElementById("rtype").value;
+    if(quality=="low"){
+        return 0.3;
+    }
+    else if(quality=="normal"){
+        return 0.5;
+    }
+
+    else if(quality=="high"){
+        return 0.8;
+    }
+    else{
+        return 0.5;
+    }
+}
 
 
-
-async function downloadPDF() {
+async function downloadPDF(s,q) {
     const { jsPDF } = window.jspdf;
     const element = document.getElementById('cover-page');
 
-  
+    
     const canvas = await html2canvas(element, { 
-        scale: 2, 
+        scale: s, 
         useCORS: true, 
         logging: false 
     });
     
-    const imgData = canvas.toDataURL('image/png');
-
+    
+    const imgData = canvas.toDataURL('image/jpeg', q);
 
     const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a4'
+        format: 'a4',
+      
+        compress: true 
     });
 
     const imgProps = pdf.getImageProperties(imgData);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-    studentId2=document.getElementById("studentid").value;
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save(studentId2+"_Cover_Page.pdf");
-}
+    
+    const studentId2 = document.getElementById("studentid").value || "Student";
 
+   
+    pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+    
+    pdf.save(studentId2 + "_Cover_Page.pdf");
+}
 
 
 
@@ -179,40 +218,48 @@ function takeScreenshot() {
 
 
 
-async function PDF1() {
+async function PDF1(resScale, quality) {
     const { jsPDF } = window.jspdf;
     const { PDFDocument } = PDFLib; 
     const element = document.getElementById('cover-page');
     const fileInput = document.getElementById("file"); 
-
 
     if (!fileInput.files[0]) {
         alert("Please upload the main PDF file first!");
         return;
     }
 
-   
-    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-    const imgData = canvas.toDataURL('image/png');
+    
+    const canvas = await html2canvas(element, { 
+        scale: resScale, 
+        useCORS: true,
+        logging: false 
+    });
 
 
-    const coverPdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const imgData = canvas.toDataURL('image/jpeg', quality);
+
+    const coverPdf = new jsPDF({ 
+        orientation: 'portrait', 
+        unit: 'mm', 
+        format: 'a4',
+        compress: true 
+    });
+
     const pdfWidth = coverPdf.internal.pageSize.getWidth();
     const imgProps = coverPdf.getImageProperties(imgData);
     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-    coverPdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    
 
+    
+    coverPdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+    
     const coverBytes = coverPdf.output('arraybuffer');
 
- 
     const uploadedFile = fileInput.files[0];
     const uploadedBytes = await uploadedFile.arrayBuffer();
 
-    
     const mergedPdf = await PDFDocument.create();
     
-   
     const pdf1 = await PDFDocument.load(coverBytes);
     const pdf2 = await PDFDocument.load(uploadedBytes);
 
@@ -222,11 +269,9 @@ async function PDF1() {
     const contentPages = await mergedPdf.copyPages(pdf2, pdf2.getPageIndices());
     contentPages.forEach((page) => mergedPdf.addPage(page));
 
+    const mergedPdfBytes = await mergedPdf.save({ useObjectStreams: true });
     
-    const mergedPdfBytes = await mergedPdf.save();
     const studentId2 = document.getElementById("studentid").value || "Student";
-    
-  
     const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
