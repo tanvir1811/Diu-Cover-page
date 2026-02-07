@@ -121,7 +121,7 @@ function download(){
              PDF1(s,q);
     }
     else if(down=="image"){
-        takeScreenshot();
+        takeScreenshot(s);
     }
 }
 
@@ -148,11 +148,11 @@ function returnquality(){
         return 0.3;
     }
     else if(quality=="normal"){
-        return 0.5;
+        return 0.7;
     }
 
     else if(quality=="high"){
-        return 0.8;
+        return 0.9;
     }
     else{
         return 0.5;
@@ -198,11 +198,11 @@ async function downloadPDF(s,q) {
 
 
 
-function takeScreenshot() {
+function takeScreenshot(s) {
     const element = document.getElementById('cover-page');
     studentId1=document.getElementById("studentid").value;
     html2canvas(element, {
-        scale: 2,           
+        scale: s,           
         useCORS: true,      
         backgroundColor: "#ffffff" 
     }).then(canvas => {
