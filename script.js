@@ -145,17 +145,17 @@ function returnscale(){
 function returnquality(){
     quality=document.getElementById("rtype").value;
     if(quality=="low"){
-        return 0.3;
+        return 0.6;
     }
     else if(quality=="normal"){
-        return 0.7;
+        return 0.85;
     }
 
     else if(quality=="high"){
-        return 0.9;
+        return 0.95;
     }
     else{
-        return 0.5;
+        return 0.85;
     }
 }
 
