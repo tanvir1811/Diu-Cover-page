@@ -128,17 +128,17 @@ function download(){
 function returnscale(){
     scale=document.getElementById("rtype").value;
     if(scale=="low"){
-        return 1;
+        return 2;
     }
     else if(scale=="normal"){
-        return 2;
+        return 3;
     }
 
     else if(scale=="high"){
-        return 3;
+        return 4;
     }
     else{
-        return 1;
+        return 2;
     }
 }
 
@@ -155,7 +155,7 @@ function returnquality(){
         return 0.9;
     }
     else{
-        return 0.5;
+        return 0.7;
     }
 }
 
