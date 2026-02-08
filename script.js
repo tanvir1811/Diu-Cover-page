@@ -155,7 +155,7 @@ function returnquality(){
         return 0.9;
     }
     else{
-        return 0.7;
+        return 0.5;
     }
 }
 
